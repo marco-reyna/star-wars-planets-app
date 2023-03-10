@@ -1,7 +1,8 @@
 export interface IPlanet {
   name: string;
-  diameter: string;
+  diameter: number;
   climate: string;
   terrain: string;
-  population: string;
+  population: number;
+  residents: string[];
 }
