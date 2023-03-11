@@ -1,41 +1,47 @@
 import axios from 'axios';
 import { create } from 'zustand';
-import { IPlanet } from '../types/index';
+import { IPlanet, IPlanetsState } from '../types/index';
 
-type PlanetsState = {
-  planets: IPlanet[]
-  nextPage: string
-  prevPage: string
-  residentName: string
-  fetchPlanets: (url: string) => Promise<void>
-  fetchResidentsNames: (url: string) => Promise<void>
-}
-
-const usePlanetsStore = create<PlanetsState>()((set) => ({
+const usePlanetsStore = create<IPlanetsState>()((set, get) => ({
   planets: [],
   nextPage: '',
   prevPage: '',
   residentName: '',
-  fetchPlanets: async (url) => {
+  residents: [],
+  fetchPlanets: async (url: string) => {
     const response = await axios(url);
     const planets: IPlanet[] = response.data.results
     const nextPage: string = response.data.next
     const prevPage: string = response.data.previous
-    set(state => ({
+    set((state) => ({
       ...state,
       planets,
       nextPage,
       prevPage,
     }));
   },
-  fetchResidentsNames: async (url) => {
-    const response = await axios(url);
+  fetchResidentsNames: async (urls: string) => {
+    const response = await axios(urls);
     const residentName: string = response.data.name;
-    set(state => ({
+    const { addResidentName } = get()
+    set((state) => ({
       ...state,
       residentName,
     }));
-    console.log(residentName);
+    addResidentName(residentName)
+  },
+  addResidentName(name: string) {
+    const { residents } = get()
+    residents.push(name)
+    set(() => ({
+      residents,
+    }));
+  },
+  clearResidentsList() {
+    const { residents } = get()
+    set(() => ({
+      residents: [] = []
+    }));
   }
 }))
 

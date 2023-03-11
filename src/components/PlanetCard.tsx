@@ -2,13 +2,20 @@ import { IPlanet } from '../types/index';
 import usePlanetsStore from '../store/planets';
 
 function PlanetCard(props: IPlanet): JSX.Element {
+  const { fetchResidentsNames, clearResidentsList } = usePlanetsStore();
+  const { residents } = usePlanetsStore(state => ({residents: state.residents}))
 
-  const { fetchResidentsNames } = usePlanetsStore();
-
-  function showResidents():void {
-    props.residents.map((url: string) => {
-      fetchResidentsNames(url);
-    })
+  function showResidents() {
+    if (residents.length > 0) {
+      clearResidentsList()
+      props.residents.forEach((urls: string) => {
+        fetchResidentsNames(urls);
+      })
+    } else {
+      props.residents.forEach((urls: string) => {
+        fetchResidentsNames(urls);
+      })
+    }
   }
 
   return (
@@ -20,7 +27,7 @@ function PlanetCard(props: IPlanet): JSX.Element {
       <p>Population: {props.population}</p>
       <div onClick={showResidents}>
         Residents:
-        {props.residents.map((resident: string, i: number) => (
+        {residents.map((resident: string, i: number) => (
           <p key={i}>{resident}</p>
         ))}
       </div>
