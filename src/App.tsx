@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import usePlanetsStore from './store/planets';
 import PlanetCard from './components/PlanetCard';
+import PopUpNewPlanet from './components/PopUpNewPlanet';
 import { IPlanet } from './types/index';
 import { shallow } from 'zustand/shallow'
 
@@ -29,22 +30,10 @@ function App(): JSX.Element {
     fetchPlanets(URL);
   }
 
-  function addNewPlanet() {
-    const planet: IPlanet = {
-      name: '',
-      diameter: 0,
-      climate: '',
-      terrain: '',
-      population: 0,
-      residents: [],
-      remove: () => {},
-    }
-    selectPlanet(planet)
-  }
-
   function select(planet: IPlanet) {
     selectPlanet(planet)
   }
+
   function remove(name: string) {
     removePlanet(name)
   }
@@ -69,6 +58,8 @@ function App(): JSX.Element {
       <button onClick={next}>
         NEXT
       </button>
+
+      <PopUpNewPlanet />
       
       {planetsList.map((planet: IPlanet, i: number) => (
         <PlanetCard
@@ -82,10 +73,6 @@ function App(): JSX.Element {
           remove={remove}
         />
       ))}
-
-      <button onClick={addNewPlanet}>
-        ADD NEW PLANET
-      </button>
     </>
   )
 }
