@@ -14,8 +14,11 @@ export interface IPlanetsState {
   prevPage: string;
   residentName: string;
   residents: string[];
+  planetsList: IPlanet[];
   fetchPlanets: (url: string) => Promise<void>;
   fetchResidentsNames: (url: string) => Promise<void>;
   addResidentName: (url: string) => void;
   clearResidentsList: () => void;
+  selectPlanet: (planet: IPlanet) => void;
+  removePlanet: (name: string) => void;
 }

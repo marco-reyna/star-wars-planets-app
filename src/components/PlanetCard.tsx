@@ -33,36 +33,36 @@ function PlanetCard(props: IPlanet): JSX.Element {
       <h1>
         <EdiText showButtonsOnHover type="text" value={props.name} onSave={handleSave} />
       </h1>
-      <p>Diameter (km):
+      <div>Diameter (km):
         <span>
           <EdiText showButtonsOnHover value={props.diameter.toString()} onSave={handleSave} />
         </span>
-      </p>
-      <p>Climate:
+      </div>
+      <div>Climate:
         <span>
           <EdiText showButtonsOnHover value={props.climate} onSave={handleSave} />
         </span>
-      </p>
-      <p>Terrain: 
+      </div>
+      <div>Terrain: 
         <span>
           <EdiText showButtonsOnHover value={props.terrain} onSave={handleSave} />
         </span>
-      </p>
-      <p>Population:
+      </div>
+      <div>Population:
         <span>
           <EdiText showButtonsOnHover value={props.population.toString()} onSave={handleSave} />
         </span>
-      </p>
+      </div>
       <div onClick={showResidents}>
         Residents:
       </div>
       <div>
         {residents.map((resident: string, i: number) => (
-          <p key={i}>
+          <div key={i}>
             <span>
               <EdiText showButtonsOnHover value={resident} onSave={handleSave} />
             </span>
-          </p>
+          </div>
         ))}
       </div>
       <button onClick={() => {

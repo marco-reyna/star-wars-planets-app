@@ -5,16 +5,15 @@ import { IPlanet } from './types/index';
 import { shallow } from 'zustand/shallow'
 
 function App(): JSX.Element {
-  const { planets, nextPage, prevPage } = usePlanetsStore(state => ({
+  const { planets, nextPage, prevPage, planetsList } = usePlanetsStore(state => ({
     planets: state.planets,
     nextPage: state.nextPage,
-    prevPage: state.prevPage
+    prevPage: state.prevPage,
+    planetsList: state.planetsList
   }), shallow);
-  const { fetchPlanets } = usePlanetsStore();
+  const { fetchPlanets, selectPlanet, removePlanet } = usePlanetsStore();
 
   const [URL, setURL] = useState<string>('https://swapi.dev/api/planets/?page=1');
-
-  const [newPlanetsList, setNewPlanetsList] = useState<IPlanet[]>([]);
   
   useEffect(() => {
     fetchPlanets(URL);
@@ -30,20 +29,24 @@ function App(): JSX.Element {
     fetchPlanets(URL);
   }
 
-  function addPlanet(planet: IPlanet) {
-    if (newPlanetsList.includes(planet)) {
-      alert("Planet already selected");
-    } else {
-      setNewPlanetsList([...newPlanetsList, planet]);
+  function addNewPlanet() {
+    const planet: IPlanet = {
+      name: '',
+      diameter: 0,
+      climate: '',
+      terrain: '',
+      population: 0,
+      residents: [],
+      remove: () => {},
     }
+    selectPlanet(planet)
   }
 
-  function removePlanet(name: string) {
-    setNewPlanetsList(() => {
-      return newPlanetsList.filter((planet, index) => {
-        return planet.name !== name
-      });
-    })
+  function select(planet: IPlanet) {
+    selectPlanet(planet)
+  }
+  function remove(name: string) {
+    removePlanet(name)
   }
 
   return (
@@ -55,7 +58,7 @@ function App(): JSX.Element {
       <div style={{display: 'flex', width: '700px', justifyContent: 'space-between'}}>
         {planets.map((planet: IPlanet) => (
           <h5 key={planet.name} onClick={() => {
-              addPlanet(planet)
+              select(planet)
             }}
           >
             {planet.name}
@@ -67,7 +70,7 @@ function App(): JSX.Element {
         NEXT
       </button>
       
-      {newPlanetsList.map((planet: IPlanet, i: number) => (
+      {planetsList.map((planet: IPlanet, i: number) => (
         <PlanetCard
           key={i}
           name={planet.name}
@@ -76,9 +79,13 @@ function App(): JSX.Element {
           terrain={planet.terrain}
           population={planet.population}
           residents={planet.residents}
-          remove={removePlanet}
+          remove={remove}
         />
       ))}
+
+      <button onClick={addNewPlanet}>
+        ADD NEW PLANET
+      </button>
     </>
   )
 }
