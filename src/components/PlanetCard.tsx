@@ -1,9 +1,13 @@
 import { IPlanet } from '../types/index';
 import usePlanetsStore from '../store/planets';
+import { shallow } from 'zustand/shallow'
 
 function PlanetCard(props: IPlanet): JSX.Element {
   const { fetchResidentsNames, clearResidentsList } = usePlanetsStore();
-  const { residents } = usePlanetsStore(state => ({residents: state.residents}))
+  const { residents } = usePlanetsStore(state => ({
+    planets: state.planets,
+    residents: state.residents
+  }), shallow);
 
   function showResidents() {
     if (residents.length > 0) {
@@ -21,16 +25,21 @@ function PlanetCard(props: IPlanet): JSX.Element {
   return (
     <div>
       <h1>{props.name}</h1>
-      <p>Diameter: {props.diameter} km</p>
-      <p>Climate: {props.climate}</p>
-      <p>Terrain: {props.terrain}</p>
-      <p>Population: {props.population}</p>
+      <p>Diameter: <span>{props.diameter}</span> km</p>
+      <p>Climate: <span>{props.climate}</span></p>
+      <p>Terrain: <span>{props.terrain}</span></p>
+      <p>Population: <span>{props.population}</span></p>
       <div onClick={showResidents}>
         Residents:
         {residents.map((resident: string, i: number) => (
           <p key={i}>{resident}</p>
         ))}
       </div>
+      <button onClick={() => {
+        props.remove(props.name)
+      }}>
+        DELETE
+      </button>
     </div>
   )
 }

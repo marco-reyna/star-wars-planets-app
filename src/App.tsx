@@ -13,6 +13,8 @@ function App(): JSX.Element {
   const { fetchPlanets } = usePlanetsStore();
 
   const [URL, setURL] = useState<string>('https://swapi.dev/api/planets/?page=1');
+
+  const [newPlanetsList, setNewPlanetsList] = useState<IPlanet[]>([]);
   
   useEffect(() => {
     fetchPlanets(URL);
@@ -28,15 +30,44 @@ function App(): JSX.Element {
     fetchPlanets(URL);
   }
 
+  function addPlanet(planet: IPlanet) {
+    if (newPlanetsList.includes(planet)) {
+      alert("Planet already selected");
+    } else {
+      setNewPlanetsList([...newPlanetsList, planet]);
+    }
+  }
+
+  function removePlanet(name: string) {
+    setNewPlanetsList(() => {
+      return newPlanetsList.filter((planet, index) => {
+        return planet.name !== name
+      });
+    })
+  }
+
   return (
     <>
       <button onClick={prev}>
         PREV
       </button>
+
+      <div style={{display: 'flex', width: '700px', justifyContent: 'space-between'}}>
+        {planets.map((planet: IPlanet) => (
+          <h5 key={planet.name} onClick={() => {
+              addPlanet(planet)
+            }}
+          >
+            {planet.name}
+          </h5>
+        ))}
+      </div>
+
       <button onClick={next}>
         NEXT
       </button>
-      {planets.map((planet: IPlanet, i: number) => (
+      
+      {newPlanetsList.map((planet: IPlanet, i: number) => (
         <PlanetCard
           key={i}
           name={planet.name}
@@ -45,6 +76,7 @@ function App(): JSX.Element {
           terrain={planet.terrain}
           population={planet.population}
           residents={planet.residents}
+          remove={removePlanet}
         />
       ))}
     </>

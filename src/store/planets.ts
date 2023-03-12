@@ -38,7 +38,6 @@ const usePlanetsStore = create<IPlanetsState>()((set, get) => ({
     }));
   },
   clearResidentsList() {
-    const { residents } = get()
     set(() => ({
       residents: [] = []
     }));

@@ -4,6 +4,8 @@ export interface IPlanet {
   climate: string;
   terrain: string;
   population: number;
+  residents: string[];
+  remove: (name: string) => void;
 }
 
 export interface IPlanetsState {
