@@ -12,40 +12,33 @@ const usePlanetsStore = create<IPlanetsState>()(
       residentName: '',
       residents: [],
       planetsList: [],
+      
       fetchPlanets: async (url: string) => {
         const response = await axios(url);
         const planets: IPlanet[] = response.data.results
         const nextPage: string = response.data.next
         const prevPage: string = response.data.previous
-        set((state) => ({
-          ...state,
-          planets,
-          nextPage,
-          prevPage,
-        }));
+        set({planets, nextPage, prevPage});
       },
+
       fetchResidentsNames: async (urls: string) => {
         const response = await axios(urls);
         const residentName: string = response.data.name;
         const { addResidentName } = get()
-        set((state) => ({
-          ...state,
-          residentName,
-        }));
+        set({residentName});
         addResidentName(residentName)
       },
+
       addResidentName(name: string) {
         const { residents } = get()
         residents.push(name)
-        set(() => ({
-          residents,
-        }));
+        set({residents});
       },
+
       clearResidentsList() {
-        set(() => ({
-          residents: [] = []
-        }));
+        set({residents: [] = []});
       },
+
       selectPlanet(planet: IPlanet) {
         const { planetsList } = get()
         if (planetsList.includes(planet)) {
@@ -53,20 +46,16 @@ const usePlanetsStore = create<IPlanetsState>()(
         } else {
           planetsList.push(planet)
           console.log(planetsList)
-          set(() => ({
-            planetsList,
-          }));
+          set({planetsList});
         }
       },
+
       removePlanet(name: string) {
         const { planetsList } = get()
         const list = planetsList.filter((planet, index) => {
           return planet.name !== name
         });
-        set((state) => ({
-          ...state,
-          planetsList: list,
-        }));
+        set({planetsList: list});
       }
     }),
     {
