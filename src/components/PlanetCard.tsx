@@ -1,6 +1,7 @@
 import { IPlanet } from '../types/index';
 import usePlanetsStore from '../store/planets';
 import { shallow } from 'zustand/shallow'
+import EdiText from 'react-editext';
 
 function PlanetCard(props: IPlanet): JSX.Element {
   const { fetchResidentsNames, clearResidentsList } = usePlanetsStore();
@@ -22,17 +23,46 @@ function PlanetCard(props: IPlanet): JSX.Element {
     }
   }
 
+
+  const handleSave = (value: string) => {
+    console.log(value);
+  };
+
   return (
     <div>
-      <h1>{props.name}</h1>
-      <p>Diameter: <span>{props.diameter}</span> km</p>
-      <p>Climate: <span>{props.climate}</span></p>
-      <p>Terrain: <span>{props.terrain}</span></p>
-      <p>Population: <span>{props.population}</span></p>
+      <h1>
+        <EdiText showButtonsOnHover type="text" value={props.name} onSave={handleSave} />
+      </h1>
+      <p>Diameter (km):
+        <span>
+          <EdiText showButtonsOnHover value={props.diameter.toString()} onSave={handleSave} />
+        </span>
+      </p>
+      <p>Climate:
+        <span>
+          <EdiText showButtonsOnHover value={props.climate} onSave={handleSave} />
+        </span>
+      </p>
+      <p>Terrain: 
+        <span>
+          <EdiText showButtonsOnHover value={props.terrain} onSave={handleSave} />
+        </span>
+      </p>
+      <p>Population:
+        <span>
+          <EdiText showButtonsOnHover value={props.population.toString()} onSave={handleSave} />
+        </span>
+      </p>
       <div onClick={showResidents}>
         Residents:
+      </div>
+      <div>
         {residents.map((resident: string, i: number) => (
-          <p key={i}>{resident}</p>
+          <p key={i}>
+            <span>
+              <EdiText showButtonsOnHover value={resident} onSave={handleSave} />
+            </span>
+          </p>
         ))}
       </div>
       <button onClick={() => {
