@@ -15,10 +15,14 @@ function App(): JSX.Element {
   const { fetchPlanets, selectPlanet, removePlanet } = usePlanetsStore();
 
   const [URL, setURL] = useState<string>('https://swapi.dev/api/planets/?page=1');
+
+  const [selectedPlanetsList, setSelectedPlanetsList] = useState<IPlanet[]>([]);
+  const [reload, setReload] = useState<number>(0);
   
   useEffect(() => {
     fetchPlanets(URL);
-  }, []);
+    setSelectedPlanetsList(planetsList);
+   }, []);
 
   function prev() {
     setURL(prevPage);
@@ -31,11 +35,20 @@ function App(): JSX.Element {
   }
 
   function select(planet: IPlanet) {
-    selectPlanet(planet)
+    if (planetsList.includes(planet)) {
+      alert("Planet already selected");
+    } else {
+      planetsList.push(planet)
+      selectPlanet(planetsList)
+      setSelectedPlanetsList(planetsList);
+    }
   }
 
   function remove(name: string) {
-    removePlanet(name)
+    const newList = planetsList.filter(planet => planet.name !== name)
+    removePlanet(newList)
+    setSelectedPlanetsList(newList);
+    setReload(Math.random())
   }
 
   return (
@@ -45,8 +58,8 @@ function App(): JSX.Element {
       </button>
 
       <div style={{display: 'flex', width: '700px', justifyContent: 'space-between'}}>
-        {planets.map((planet: IPlanet) => (
-          <h5 key={planet.name} onClick={() => {
+        {planets.map((planet: IPlanet, index) => (
+          <h5 key={index} onClick={() => {
               select(planet)
             }}
           >
@@ -61,18 +74,20 @@ function App(): JSX.Element {
 
       <PopUpNewPlanet />
       
-      {planetsList.map((planet: IPlanet, i: number) => (
-        <PlanetCard
-          key={i}
-          name={planet.name}
-          diameter={planet.diameter * 6378.16}
-          climate={planet.climate}
-          terrain={planet.terrain}
-          population={planet.population}
-          residents={planet.residents}
-          remove={remove}
-        />
-      ))}
+      <div key={reload}>
+        {selectedPlanetsList.map((planet: IPlanet, i: number) => (
+          <PlanetCard
+            key={i}
+            name={planet.name}
+            diameter={planet.diameter * 6378.16}
+            climate={planet.climate}
+            terrain={planet.terrain}
+            population={planet.population}
+            residents={planet.residents}
+            remove={remove}
+          />
+        ))}
+      </div>
     </>
   )
 }

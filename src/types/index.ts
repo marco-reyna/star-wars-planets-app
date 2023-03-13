@@ -15,10 +15,13 @@ export interface IPlanetsState {
   residentName: string;
   residents: string[];
   planetsList: IPlanet[];
+}
+
+export interface IPlanetsActions {
   fetchPlanets: (url: string) => Promise<void>;
   fetchResidentsNames: (url: string) => Promise<void>;
   addResidentName: (url: string) => void;
   clearResidentsList: () => void;
-  selectPlanet: (planet: IPlanet) => void;
-  removePlanet: (name: string) => void;
+  selectPlanet: (list: IPlanet[]) => void;
+  removePlanet: (list: IPlanet[]) => void;
 }
