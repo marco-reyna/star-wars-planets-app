@@ -4,6 +4,7 @@ import PlanetCard from './components/PlanetCard';
 import PopUpNewPlanet from './components/PopUpNewPlanet';
 import { IPlanet } from './types/index';
 import { shallow } from 'zustand/shallow'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App(): JSX.Element {
   const { planets, nextPage, prevPage, planetsList } = usePlanetsStore(state => ({
@@ -53,28 +54,40 @@ function App(): JSX.Element {
 
   return (
     <>
-      <button onClick={prev}>
-        PREV
-      </button>
-
-      <div style={{display: 'flex', width: '700px', justifyContent: 'space-between'}}>
-        {planets.map((planet: IPlanet, index) => (
-          <h5 key={index} onClick={() => {
-              select(planet)
-            }}
+      <div className='container-xxl d-flex justify-content-between py-5'>
+        {prevPage !== null && 
+          <button
+            className='btn btn-outline-warning'
+            onClick={prev}
           >
-            {planet.name}
-          </h5>
-        ))}
+            PREVIOUS
+          </button>
+        }
+
+        <div className='container d-flex justify-content-around'>
+          {planets.map((planet: IPlanet, index) => (
+            <button type="button" className='btn btn-light bg-none' key={index} onClick={() => {
+                select(planet)
+              }}
+            >
+              {planet.name}
+            </button>
+          ))}
+        </div>
+
+        {nextPage !== null &&
+          <button
+          className='btn btn-outline-warning'
+          onClick={next}
+          >
+            NEXT
+          </button>
+        }
       </div>
 
-      <button onClick={next}>
-        NEXT
-      </button>
-
-      <PopUpNewPlanet />
+      <PopUpNewPlanet createPlanet={select} />
       
-      <div key={reload}>
+      <div key={reload} className='d-flex row gap-3 justify-content-center container-xxl mx-auto'>
         {selectedPlanetsList.map((planet: IPlanet, i: number) => (
           <PlanetCard
             key={i}
@@ -85,6 +98,7 @@ function App(): JSX.Element {
             population={planet.population}
             residents={planet.residents}
             remove={remove}
+            select={select}
           />
         ))}
       </div>

@@ -6,6 +6,7 @@ export interface IPlanet {
   population: number;
   residents: string[];
   remove: (name: string) => void;
+  select: ({}: IPlanet) => void;
 }
 
 export interface IPlanetsState {
