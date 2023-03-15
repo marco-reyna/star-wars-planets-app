@@ -17,7 +17,7 @@ function PopUpNewPlanet(props: ICreatePlanet): JSX.Element {
 
   const [showCreatePlanetPopUp, setCreatePlanetPopUp] = useState<boolean>(false);
 
-  function create() {
+  function create(): void {
     const planet: IPlanet = {
       name: name,
       diameter: diameter,
@@ -25,32 +25,34 @@ function PopUpNewPlanet(props: ICreatePlanet): JSX.Element {
       terrain: terrain,
       population: population,
       residents: residents,
+      selectedPlanetName: '',
       remove: () => {},
       select: () => {},
+      showResidents: () => {}
     }
-    props.createPlanet(planet)
+    props.createPlanet(planet);
     setCreatePlanetPopUp(false);
-    setName('')
-    setDiameter(0)
-    setClimate('')
-    setTerrain('')
-    setPopulation(0)
-    setResidents([])
+    setName('');
+    setDiameter(0);
+    setClimate('');
+    setTerrain('');
+    setPopulation(0);
+    setResidents([]);
   }
 
-  function handleResidents(name: string) {
-    setResident(name)
-    setResidents([...residents, resident])
+  function handleResidents(resident: string): void {
+    residents.push(resident);
+    setResidents(residents);
   }
 
-  function addNewPlanet() {
+  function addNewPlanet(): void {
     setCreatePlanetPopUp(true);
   }
 
   return (
     <div className='container-xxl mx-auto text-center pb-5'>
       {!showCreatePlanetPopUp && <button
-        className='btn btn-outline-success'
+        className='btn btn-outline-warning'
         onClick={addNewPlanet}
       >
         ADD NEW PLANET
@@ -58,7 +60,7 @@ function PopUpNewPlanet(props: ICreatePlanet): JSX.Element {
 
       {showCreatePlanetPopUp &&
       <div className='card text-warning border-warning bg-transparent mb-3 p-3' style={{maxWidth: '24rem'}}>
-        <h3 className='card-title lh-1'>
+        <h3 className='card-title lh-1' style={{fontFamily: 'star wars'}}>
           <EdiText showButtonsOnHover type="text" value={name} onSave={setName} />
         </h3>
         <div>

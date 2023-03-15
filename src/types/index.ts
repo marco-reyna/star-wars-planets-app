@@ -5,8 +5,10 @@ export interface IPlanet {
   terrain: string;
   population: number;
   residents: string[];
+  selectedPlanetName: string;
   remove: (name: string) => void;
   select: ({}: IPlanet) => void;
+  showResidents: (name: string, planetResidents: string[]) => void;
 }
 
 export interface IPlanetsState {
