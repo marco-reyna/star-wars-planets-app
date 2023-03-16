@@ -79,7 +79,11 @@ function App(): JSX.Element {
 
         <div className='container text-center bg-warning mx-5 rounded-3 py-2'>
           {planets.map((planet: IPlanet, index) => (
-            <div className='text-dark fw-bold btn btn-warning' style={{cursor: 'pointer'}} key={index} onClick={() => {
+            <div
+              className='text-dark fw-bold btn btn-warning'
+              style={{cursor: 'pointer'}}
+              key={index}
+              onClick={() => {
                 select(planet)
               }}
             >
