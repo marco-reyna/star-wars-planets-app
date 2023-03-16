@@ -1,6 +1,16 @@
-# React + TypeScript + Vite
+# Star Wars Planets App
 
 This is a simple app built in React/TypeScript that allows you to check details of all the planets from Star Wars (SWAPI). You can also create new planets and edit the existing ones.
+
+## Stack used
+
+- TypeScript
+- React
+- Zustand
+- Vite
+- Cypress
+- Bootstrap
+- Axios
 
 #### Need to install locally:
 
